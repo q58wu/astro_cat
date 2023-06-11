@@ -16,7 +16,7 @@ object RetrofitBuilder {
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
-                    .addInterceptor { chain ->
+                    /*.addInterceptor { chain ->
                         val url = chain
                             .request()
                             .url
@@ -27,7 +27,7 @@ object RetrofitBuilder {
                             )
                             .build()
                         chain.proceed(chain.request().newBuilder().url(url).build())
-                    }
+                    }*/
                     .build())
             .build()
     }
@@ -46,6 +46,21 @@ object RetrofitBuilder {
             .build()
     }
 
+    private fun getDogRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(DOG_BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            /*.client(
+                OkHttpClient.Builder()
+                    .addInterceptor { chain ->
+                        chain.proceed(chain.request().newBuilder().header("x-api-key",
+                            "live_mXr25fx3GIYIy9iSjV9NzDGv9BoFt7ujM9GjP2SPCvA45bE7vc2mzv22LSft9VkW").build())
+                    }
+                    .build())*/
+            .build()
+    }
+
     val astroApiService: AstroApiService = getAstroRetrofit().create(AstroApiService::class.java)
     val catApiService: CatApiService = getCatRetrofit().create(CatApiService::class.java)
+    val dogApiService: DogApiService = getDogRetrofit().create(DogApiService::class.java)
 }

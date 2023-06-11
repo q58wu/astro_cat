@@ -15,3 +15,8 @@ interface CatApiService {
     @GET("images/search")
     suspend fun getCatsImage(@Query("limit") limit: Int = 20): List<PetCard>
 }
+
+interface DogApiService {
+    @GET("images/search")
+    suspend fun getDogsImage(@Query("limit") limit: Int = 20): List<PetCard>
+}
