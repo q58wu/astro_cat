@@ -17,9 +17,9 @@ class AstroCardsViewModel : ViewModel() {
         get() = _cards
 
 
-    suspend fun getCards(startDate: String, endDate: String) {
+/*    suspend fun getCards(startDate: String, endDate: String) {
         _cards.value  = RetrofitBuilder.astroApiService.getCard(startDate, endDate)
-    }
+    }*/
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

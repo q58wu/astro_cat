@@ -3,7 +3,8 @@ package com.example.astropicoftheday.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.astropicoftheday.infra.RetrofitBuilder
-import com.example.astropicoftheday.model.PetCard
+import com.example.astropicoftheday.model.PetAndJokeCombinedCard
+import com.example.astropicoftheday.model.Pet
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class PetCardsViewModel : ViewModel() {
 
-    private val _cards = MutableStateFlow(listOf<PetCard>())
-    val uiState: StateFlow<List<PetCard>>
+    private val _cards = MutableStateFlow(listOf<PetAndJokeCombinedCard>())
+    val uiState: StateFlow<List<PetAndJokeCombinedCard>>
         get() = _cards.asStateFlow()
 
     private val _isRefreshing = MutableStateFlow(false)
@@ -30,23 +31,31 @@ class PetCardsViewModel : ViewModel() {
     private suspend fun getPets() {
         val cats = RetrofitBuilder.catApiService.getCatsImage(5)
         val dogs = RetrofitBuilder.dogApiService.getDogsImage(5)
-        val mixer = mutableListOf<PetCard>().apply {
-            addAll(cats)
-            addAll(dogs)
+        val jokes = RetrofitBuilder.jokesApiService.getJokes(10).jokes
+        val mixer = mutableListOf<Pet>().apply {
+            addAll(cats.subList(0,5))
+            addAll(dogs.subList(0,5))
             shuffle()
         }
-        _cards.value  = mixer
+        val petsAndJokes = mixer.mapIndexed { index, petCard ->
+            PetAndJokeCombinedCard(petCard.url, jokes[index].setup, jokes[index].delivery)
+        }
+        _cards.value  = petsAndJokes
     }
 
     private suspend fun getMorePets() {
-        val cats = RetrofitBuilder.catApiService.getCatsImage()
-        val dogs = RetrofitBuilder.dogApiService.getDogsImage()
-        val mixer = mutableListOf<PetCard>().apply {
-            addAll(cats)
-            addAll(dogs)
+        val cats = RetrofitBuilder.catApiService.getCatsImage(5)
+        val dogs = RetrofitBuilder.dogApiService.getDogsImage(5)
+        val jokes = RetrofitBuilder.jokesApiService.getJokes(10).jokes
+        val mixer = mutableListOf<Pet>().apply {
+            addAll(cats.subList(0,5))
+            addAll(dogs.subList(0,5))
             shuffle()
         }
-        _cards.value  += mixer
+        val petsAndJokes = mixer.mapIndexed { index, petCard ->
+            PetAndJokeCombinedCard(petCard.url, jokes[index].setup, jokes[index].delivery)
+        }
+        _cards.value  += petsAndJokes
     }
 
     fun refresh(){

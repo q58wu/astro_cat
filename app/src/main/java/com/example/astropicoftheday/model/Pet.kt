@@ -2,7 +2,7 @@ package com.example.astropicoftheday.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PetCard(
+data class Pet(
     @SerializedName("id")
     val id: String,
     @SerializedName("url")

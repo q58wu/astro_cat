@@ -36,7 +36,8 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun PetImageCard(url: String, contentDescription: String? = null){
+fun PetImageCard(url: String, contentDescription: String? = null,
+                 joke1: String, joke2: String){
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -61,16 +62,16 @@ fun PetImageCard(url: String, contentDescription: String? = null){
             }
             Text(
                 fontSize = 14.sp,
-                maxLines = 2,
-                text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
+                //maxLines = 2,
+                text = joke1,
                 modifier = Modifier.padding(horizontal = 4.dp)
             )
             Spacer(Modifier.height(4.dp).fillMaxWidth())
             Row{
                 Text(
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    text = "Lorem",
+                    fontSize = 14.sp,
+                    //maxLines = 1,
+                    text = joke2,
                     modifier = Modifier.padding(horizontal = 4.dp)
                 )
                 Spacer(Modifier.weight(1f))
@@ -85,5 +86,8 @@ fun PetImageCard(url: String, contentDescription: String? = null){
 @Preview(showBackground = true, backgroundColor = 0xfff)
 @Composable
 private fun preview1(){
-    PetImageCard("","")
+    PetImageCard("",
+        "",
+        "what is love",
+        "baby dont hurt me")
 }
